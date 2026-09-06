@@ -1,9 +1,13 @@
 package domain
 
+import "errors"
+
+var ErrCollectionEmpty = errors.New("collection empty")
+
 type Document struct{
     ID string
-    Name string
+    Title string
     Content string
     TenantID string
-    AllowGroups  []string
+    AllowedGroups  []string
 }
