@@ -3,26 +3,22 @@ package sharepoint
 import (
 	"fmt"
 	"slices"
-	"sp-sidecar/internal/application"
 	"sp-sidecar/internal/domain"
 )
 
-
+//Mock of a SharePoint source of documents
 type MockSharePointSource struct{
-    Collection []domain.Document
+    documents []domain.Document
 }
 
-type DocumentSourceReporistory struct {
-    repository application.DocumentSource
-}
-
+//Function creating a new SharePoint Source
 func NewMockSharePointSource(collection []domain.Document)(*MockSharePointSource){
-
         return &MockSharePointSource{
-            Collection: collection,
+            documents: collection,
         }
 }
 
+//Collection of mock SharePoint Documents source
 func CollectionMockSharePointSource()([]domain.Document){
     return []domain.Document{
                 {
@@ -55,27 +51,43 @@ func CollectionMockSharePointSource()([]domain.Document){
             }
 }
 
-func (dsr *MockSharePointSource)ListDocuments()([]domain.Document,error){
+// type DocumentSourceRepository struct {
+//     repository *domain.DocumentSource
+// }
+
+//Implementation of method listing documents
+func (dsr *MockSharePointSource)ListDocuments()([]domain.Document){
 
     var documents []domain.Document
-    // var documents_copy []domain.Document
     
-    for _,doc :=range dsr.Collection {
+    for _,doc :=range dsr.documents {
         documents = append(documents, doc)
     }
 
     if len(documents) == 0 {
-        return nil, fmt.Errorf(
-            "%w",
-            domain.ErrCollectionEmpty,
-        )
+        return nil
     }
 
-    return slices.Clone(documents),nil
+    return slices.Clone(documents)
     
 }
 
+//Implementation of method getting document by ID
+func (dsr *MockSharePointSource)GetDocument(id string)(domain.Document,error){
 
+
+        for _,doc := range dsr.documents {
+            if doc.ID == id {
+                return doc,nil
+            }
+        }
+
+        return domain.Document{}, fmt.Errorf(
+            "%w: document id = %q",
+            domain.ErrDocumentNotFound,
+            id,
+        )
+}
 
 
 
