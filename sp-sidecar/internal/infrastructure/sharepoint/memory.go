@@ -16,36 +16,12 @@ type DocumentSourceReporistory struct {
     repository application.DocumentSource
 }
 
-
-func (dsr *MockSharePointSource)ListDocuments()([]domain.Document,error){
-
-    var documents []domain.Document
-    // var documents_copy []domain.Document
-    
-    for _,doc :=range dsr.Collection {
-        documents = append(documents, doc)
-    }
-
-    if len(documents) == 0 {
-        return nil, fmt.Errorf(
-            "%w",
-            domain.ErrCollectionEmpty,
-        )
-    }
-
-    return slices.Clone(documents),nil
-    
-}
-
-
-
 func NewMockSharePointSource(collection []domain.Document)(*MockSharePointSource){
 
         return &MockSharePointSource{
             Collection: collection,
         }
 }
-
 
 func CollectionMockSharePointSource()([]domain.Document){
     return []domain.Document{
@@ -78,4 +54,29 @@ func CollectionMockSharePointSource()([]domain.Document){
                 },
             }
 }
+
+func (dsr *MockSharePointSource)ListDocuments()([]domain.Document,error){
+
+    var documents []domain.Document
+    // var documents_copy []domain.Document
+    
+    for _,doc :=range dsr.Collection {
+        documents = append(documents, doc)
+    }
+
+    if len(documents) == 0 {
+        return nil, fmt.Errorf(
+            "%w",
+            domain.ErrCollectionEmpty,
+        )
+    }
+
+    return slices.Clone(documents),nil
+    
+}
+
+
+
+
+
 
