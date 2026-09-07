@@ -37,19 +37,3 @@ func (d Document)CanAccess(user User)(bool){
 
     return false
 }
-
-func(d Document)CanAccessSimpler(tenantID string, groups []string)(bool){
-
-    if tenantID != d.TenantID {
-        return false
-    }
-
-    for _,group := range groups {
-        if slices.Contains(d.AllowedGroups,group) {
-            return true
-        }
-    }
-
-    return false
-    
-}

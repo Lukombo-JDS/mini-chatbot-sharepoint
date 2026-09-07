@@ -51,9 +51,21 @@ func CollectionMockSharePointSource()([]domain.Document){
             }
 }
 
-// type DocumentSourceRepository struct {
-//     repository *domain.DocumentSource
-// }
+
+/*List Document a user can access */
+func (ms *MockSharePointSource)ListAccessibleDocuments(user domain.User)([]domain.Document){
+
+    var documents []domain.Document
+
+    for _,d :=range ms.documents {
+       
+       if d.CanAccess(user) {
+           documents = append(documents, d)
+       }
+    }
+    
+    return slices.Clone(documents)
+}
 
 //Implementation of method listing documents
 func (dsr *MockSharePointSource)ListDocuments()([]domain.Document){

@@ -22,3 +22,7 @@ func (ds *DocumentSourceService)ListDocuments()([]domain.Document){
 func (ds *DocumentSourceService)GetDocument(id string)(domain.Document,error){
     return ds.repository.GetDocument(id)
 }
+
+func (ds *DocumentSourceService)ListAccessibleDocuments(user domain.User)([]domain.Document){
+    return ds.repository.ListAccessibleDocuments(user)
+}
