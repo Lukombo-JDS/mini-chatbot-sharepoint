@@ -1,6 +1,8 @@
 package application
 
 import (
+	
+	"slices"
 	"sp-sidecar/internal/domain"
 	"sp-sidecar/internal/infrastructure/sharepoint"
 	"testing"
@@ -38,6 +40,13 @@ func TestListAccessibleDocuments(t *testing.T){
             Groups: []string{
                     "trainee",
                 },
+        },
+        {
+            Name: "Mihawk",
+            TenantID: "Bank-Cross-Guild",
+            Groups: []string{
+                "executive",
+            },
         },
     }
 
@@ -88,40 +97,73 @@ func TestListAccessibleDocuments(t *testing.T){
     
     tests := []struct {
             user domain.User
-            // document domain.Document
+            idWanted []string
             want int
     }{
         {
             user: users[0],
-            // document: docs[0],
+            idWanted: []string{"doc-2"},
             want: 1,
         },
         {
             user: users[1],
-            // document: docs[1],
+            idWanted: []string{
+                "doc-1",
+                "doc-2",
+            },
             want: 2,
         },
         {
             user: users[2],
-            // document: docs[2],
+            idWanted: []string{
+                "doc-1",
+                "doc-2",
+                "doc-4",
+            },
             want: 3,
         },
         {
             user: users[3],
-            // document: docs[3],
+            idWanted: []string{},
             want: 0,
+        },
+        {
+            user :users[4],
+            idWanted: []string{
+                "doc-3",
+            },
+            want: 1,
         },
     }
 
     repository := sharepoint.NewMockSharePointSource(docs)
     service := NewDocumentSourceService(repository)
+    
     for _,test := range tests{
-        var got []domain.Document
+        
+        
         t.Run(test.user.Name,func(t *testing.T) {
+            var got []domain.Document
+            var IDs []string
             got = service.ListAccessibleDocuments(test.user)
+            for _, g :=range got{
+                if ! g.CanAccess(test.user) {
+                    t.Fatalf("returned inaccessible document: %q", g.ID)
+                }
+            }
+            if len(got) != test.want {
+                t.Errorf("excepted: %d, got %d",test.want, len(got))
+            }
+            for _,g := range got{
+                IDs = append(IDs, g.ID)
+            }
+    
+            
+            if slices.Compare(IDs,test.idWanted) != 0 {
+                t.Fatalf("expected: %v, got: %v",test.idWanted, IDs)
+            }
         })
-        if len(got) != test.want {
-            t.Errorf("excepted: %d, got %d",test.want, len(got))
-        }
+        
+
     }
 }

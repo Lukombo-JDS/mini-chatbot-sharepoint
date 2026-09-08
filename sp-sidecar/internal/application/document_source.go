@@ -1,6 +1,7 @@
 package application
 
 import (
+	"slices"
 	"sp-sidecar/internal/domain"
 )
 
@@ -24,5 +25,15 @@ func (ds *DocumentSourceService)GetDocument(id string)(domain.Document,error){
 }
 
 func (ds *DocumentSourceService)ListAccessibleDocuments(user domain.User)([]domain.Document){
-    return ds.repository.ListAccessibleDocuments(user)
+
+        docsAllowed := []domain.Document{}
+        
+        for _,d := range ds.repository.ListDocuments() {
+
+            if d.CanAccess(user) {
+                docsAllowed = append(docsAllowed, d)
+            }
+        }
+
+        return slices.Clone(docsAllowed)
 }

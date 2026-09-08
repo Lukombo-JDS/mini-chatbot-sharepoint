@@ -53,19 +53,19 @@ func CollectionMockSharePointSource()([]domain.Document){
 
 
 /*List Document a user can access */
-func (ms *MockSharePointSource)ListAccessibleDocuments(user domain.User)([]domain.Document){
+// func (ms *MockSharePointSource)ListAccessibleDocuments(user domain.User)([]domain.Document){
 
-    var documents []domain.Document
+//     var documents []domain.Document
 
-    for _,d :=range ms.documents {
+//     for _,d :=range ms.documents {
        
-       if d.CanAccess(user) {
-           documents = append(documents, d)
-       }
-    }
+//        if d.CanAccess(user) {
+//            documents = append(documents, d)
+//        }
+//     }
     
-    return slices.Clone(documents)
-}
+//     return slices.Clone(documents)
+// }
 
 //Implementation of method listing documents
 func (dsr *MockSharePointSource)ListDocuments()([]domain.Document){
