@@ -3,10 +3,13 @@ package httpapi
 import "net/http"
 
 
-func Router()(*http.ServeMux){
+func Router(dh *DocumentHandler)(*http.ServeMux){
+
+    
     
     serveMux := http.NewServeMux()
     serveMux.HandleFunc("GET /healthz", HealthHandler)
+    serveMux.HandleFunc("GET /documents", dh.ListDocuments)
     
     return serveMux
 }

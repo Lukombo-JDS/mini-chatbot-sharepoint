@@ -38,7 +38,7 @@ func HealthHandler(w http.ResponseWriter, r *http.Request){
 }
 
 
-func (h *DocumentHandler)ListDocuments(w http.ResponseWriter,r *http.Request){
+func (h *DocumentHandler)ListDocuments(w http.ResponseWriter, r *http.Request){
     
     type documentResponse struct{
         Status string `json:"status"`
