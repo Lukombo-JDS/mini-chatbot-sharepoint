@@ -25,26 +25,39 @@ func CollectionMockSharePointSource()([]domain.Document){
                     ID: "doc-1",
                     Title: "doc-employee",
                     Content: "Luffy is the captain",
-                    TenantID: "bank-a",
+                    TenantID: "Bank-Kara",
                     AllowedGroups: []string{
                         "employee",
+                        "executive",
+                        "risk",
                     },
                 },
                 {
                     ID: "doc-2",
                     Title: "doc-risk",
                     Content: "ROI this year: 20 000 000€",
-                    TenantID: "bank-a",
+                    TenantID: "Bank-Cross-Guild",
                     AllowedGroups: []string{
                         "risk",
+                        "executive",
                     },   
                 },
                 {
                     ID: "doc-3",
                     Title: "doc-executive",
                     Content: "The CFO is Nami",
-                    TenantID: "bank-a",
+                    TenantID: "Bank-Kara",
                     AllowedGroups:[]string{
+                        "executive",
+                    },
+                },
+                {
+                    ID: "doc-4",
+                    Title: "doc-employee",
+                    Content: "The number of trainees...",
+                    TenantID: "Bank-Kara",
+                    AllowedGroups: []string{
+                        "employee",
                         "executive",
                     },
                 },
