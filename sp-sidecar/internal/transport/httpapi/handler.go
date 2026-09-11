@@ -52,7 +52,7 @@ func (h *DocumentHandler)ListDocuments(w http.ResponseWriter, r *http.Request){
         Error string `json:"error"`
     }
 
-    user,err := userFormResquest(r)
+    user,err := userFormRequest(r)
 
     w.Header().Set("content-type", "application/json")
     
@@ -90,7 +90,7 @@ func (h *DocumentHandler)ListDocuments(w http.ResponseWriter, r *http.Request){
     
 }
 
-func userFormResquest(r *http.Request)(domain.User,error){
+func userFormRequest(r *http.Request)(domain.User,error){
 
     userID:=r.Header.Get("X-User-ID")
     tenantID:=r.Header.Get("X-Tenant-ID")
