@@ -166,7 +166,7 @@ func TestListDocumentsHandler(t *testing.T) {
             //sorting both slices to compare in the same order element by element.
             slices.Sort(DocumentIDsClone)
             slices.Sort(test.ExpectedDocumentsIDs)
-        
+            
             //Assert
 
             //check the status code: CanAccess is working or not
