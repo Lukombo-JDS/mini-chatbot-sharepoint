@@ -1,9 +1,14 @@
 [project]
 name = "rag-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "RAG API for Sharepoint ACL"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "httpx>=0.28.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
 ]
