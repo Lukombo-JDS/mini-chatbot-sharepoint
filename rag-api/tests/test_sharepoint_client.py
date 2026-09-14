@@ -1,8 +1,9 @@
 import httpx
 from src.rag_api.domain.models import Document, User
 from src.rag_api.infrastructure.sharepoint_client import SharePointClient
+import pytest
 
-def handler(request: httpx.Request):
+def handler_status_ok(request: httpx.Request):
 
     document = {
         "ID": "docs-1",
@@ -26,6 +27,19 @@ def handler(request: httpx.Request):
         }
     )
 
+def handler_status_unauthorized(request: httpx.Request):
+
+    assert request.method == "GET"
+    assert request.url.path == "/documents"
+
+    
+    return httpx.Response(
+        httpx.codes.UNAUTHORIZED,
+        json={
+            "error": "missing user identity"
+        }
+    )
+
 def test_sharepoint_client():
 
     ######## ARRANGE ######
@@ -36,7 +50,7 @@ def test_sharepoint_client():
         groups=["risk","executive"]
     )
 
-    transport = httpx.MockTransport(handler) # fake server with fake handler
+    transport = httpx.MockTransport(handler_status_ok) # fake server with fake handler
 
     client = httpx.Client(transport=transport) # fake client
 
@@ -55,3 +69,20 @@ def test_sharepoint_client():
     assert docs[0].id == "docs-1"  
     assert docs[0].tenant_id == "Bank-Kara" 
     assert docs[0].allowed_groups == ["risk", "executive"] # right allowed groups    
+
+def test_sharepoint_client_error():
+
+    user = User(
+        user_id="Baggy",
+        tenant_id="Bank-Cross-Guild",
+        groups=["risk", "executive"]
+    )
+
+    transport = httpx.MockTransport(handler=handler_status_unauthorized)
+
+    client = httpx.Client(transport=transport)
+
+    with pytest.raises(httpx.HTTPStatusError, match="401 Unauthorized"):
+        
+        _ = SharePointClient(client).list_documents(user)
+
