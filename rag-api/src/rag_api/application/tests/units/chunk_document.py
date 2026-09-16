@@ -109,13 +109,13 @@ def test_chunk_empty_content():
     assert chunks == []
 
 @pytest.mark.parametrize(
-    "chunk_size,expected_chunks",
+    "chunk_size",
     [
-        (0,[]),
-        (-2,[])
+        (0),
+        (-2)
     ]
 )
-def test_zero_negative_chunk_size(chunk_size,expected_chunks):
+def test_zero_negative_chunk_size(chunk_size):
 
     fake_document = Document(
             title="One Piece Live Action",
@@ -125,8 +125,7 @@ def test_zero_negative_chunk_size(chunk_size,expected_chunks):
             allowed_groups=["risk", "executive"]
             
         )
-
-    chunks = ChunkingService().chunk_document(document=fake_document, chunk_size=chunk_size)
-
-    assert chunks == expected_chunks
-
+    with pytest.raises(ValueError, match="invalid chunk size"):
+    
+        _ = ChunkingService().chunk_document(document=fake_document, chunk_size=chunk_size)
+    

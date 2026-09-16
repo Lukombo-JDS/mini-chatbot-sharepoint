@@ -16,7 +16,7 @@ class ChunkingService:
     def chunk_document(self, document: Document, chunk_size:int) -> list[Chunk]:
 
         if chunk_size <=0 :
-            return []
+            raise ValueError("invalid chunk size")
 
         
         count_chunk: int = 0
