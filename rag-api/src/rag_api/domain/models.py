@@ -16,3 +16,12 @@ class Document:
     content: str
     tenant_id: str
     allowed_groups: list[str]
+
+@dataclass
+class Chunk:
+    id: str
+    chunk_index: int
+    document_id: str
+    tenant_id: str
+    content: str
+    allowed_groups: list[str]
